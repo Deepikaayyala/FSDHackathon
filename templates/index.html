@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f2">
+  <title>FixFirst — Better places start together</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='app.js', v='20261012-resolved-delete') }}" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="FixFirst home">
+      <span class="brand-mark" aria-hidden="true">F</span>
+      <span>fix<span>first</span></span>
+    </a>
+    <nav class="top-nav" aria-label="Main navigation">
+      <a class="nav-active" href="#issues">Explore issues</a>
+      <a href="#how-it-works">How it works</a>
+    </nav>
+    <a class="nav-cta" href="#report-form">Report a problem <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse-dot"></span> SMALL ACTIONS. BETTER PLACES.</div>
+        <h1>Let’s fix what<br>matters <span>first.</span></h1>
+        <p>Spot a problem in your community? Bring it to light, find your people, and make a difference together.</p>
+        <a class="button button-dark" href="#issues">See what needs fixing <span aria-hidden="true">↓</span></a>
+        <div class="hero-proof">
+          <div class="avatar-stack" aria-hidden="true"><i>M</i><i>A</i><i>J</i><i>+</i></div>
+          <span>Good things happen when neighbors show up.</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of neighbors caring for their community">
+        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+        <div class="sun"></div><div class="hill hill-back"></div><div class="hill hill-front"></div>
+        <div class="art-house"><div class="house-roof"></div><div class="house-body"><span></span><span></span><b></b></div></div>
+        <div class="tree tree-left"><i></i><b></b></div><div class="tree tree-right"><i></i><b></b></div>
+        <div class="person person-one"><i></i><b></b><span></span></div>
+        <div class="person person-two"><i></i><b></b><span></span></div>
+        <div class="art-label"><span>✳</span> Your neighborhood,<br>made better.</div>
+        <div class="floating-tag"><span>●</span> Neighbors in action</div>
+      </div>
+    </section>
+
+    <section class="impact-strip" id="how-it-works">
+      <div><span class="impact-icon">◎</span><p><strong>Notice</strong><br>See something that needs attention?</p></div>
+      <span class="impact-arrow" aria-hidden="true">→</span>
+      <div><span class="impact-icon">↗</span><p><strong>Prioritize</strong><br>Help your community focus on what matters.</p></div>
+      <span class="impact-arrow" aria-hidden="true">→</span>
+      <div><span class="impact-icon">✳</span><p><strong>Make it happen</strong><br>Team up and turn an idea into action.</p></div>
+    </section>
+
+    <section class="workspace" id="issues">
+      <div class="dashboard">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">THE COMMUNITY BOARD</div>
+            <h2>What needs fixing?</h2>
+            <p class="section-subtitle">Real issues. Local people. A little progress every day.</p>
+          </div>
+          <div class="live-indicator"><span></span> Live community feed</div>
+        </div>
+        <div class="toolbar">
+          <div class="filter-tabs" role="group" aria-label="Filter by status">
+            <button class="filter-tab active" data-status="all">All issues <span id="all-count">0</span></button>
+            <button class="filter-tab" data-status="open">Needs help</button>
+            <button class="filter-tab" data-status="in_progress">In progress</button>
+          </div>
+          <label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search issues..." aria-label="Search issues"></label>
+        </div>
+        <div class="category-row" id="category-filters">
+          <button class="category-chip selected" data-category="all">All categories</button>
+          {% for category in categories %}
+          <button class="category-chip" data-category="{{ category }}">{{ category }}</button>
+          {% endfor %}
+        </div>
+        <div id="issue-list" class="issue-grid" aria-live="polite"></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <span>✳</span><h3>No issues found</h3><p>Try another filter, or be the first to report a problem.</p>
+        </div>
+        <div id="load-error" class="error-banner" hidden></div>
+      </div>
+
+      <aside class="report-panel" id="report-form">
+        <div class="form-heading">
+          <span class="form-icon">＋</span><div class="eyebrow">YOUR COMMUNITY NEEDS YOU</div>
+          <h2>See something?<br>Say something.</h2>
+          <p>Every improvement starts with someone who cares enough to speak up.</p>
+        </div>
+        <form id="new-issue-form">
+          <label class="field-label" for="reporter-name">Your name</label>
+          <input id="reporter-name" name="reporter_name" type="text" maxlength="80" placeholder="How neighbors know you" required>
+          <label class="field-label" for="issue-title">What needs fixing?</label>
+          <input id="issue-title" name="title" type="text" maxlength="120" placeholder="e.g. Streetlight out on Pine St" required>
+          <label class="field-label" for="issue-description">Tell us a little more</label>
+          <textarea id="issue-description" name="description" maxlength="2000" rows="3" placeholder="What’s happening and why does it matter?" required></textarea>
+          <div class="field-pair">
+            <div><label class="field-label" for="category">Category</label>
+              <select id="category" name="category" required>
+                {% for category in categories %}<option value="{{ category }}">{{ category }}</option>{% endfor %}
+              </select>
+            </div>
+            <div><label class="field-label" for="severity">Urgency</label>
+              <select id="severity" name="severity" required>
+                <option value="1">Low</option><option value="2">A little urgent</option>
+                <option value="3" selected>Moderate</option><option value="4">Urgent</option><option value="5">Very urgent</option>
+              </select>
+            </div>
+          </div>
+          <label class="field-label" for="location">Where is it?</label>
+          <input id="location" name="location" type="text" maxlength="160" placeholder="Street, landmark, or area" required>
+          <p class="report-count-note">We count unique neighbors who report the same problem in this category and location.</p>
+          <button class="button button-submit" type="submit">Post to the community <span aria-hidden="true">↗</span></button>
+          <p class="form-note">By posting, you’re helping your neighbors make a difference.</p>
+          <p id="form-feedback" class="form-feedback" role="status" hidden></p>
+        </form>
+      </aside>
+    </section>
+    <footer class="footer"><a class="brand" href="/"><span class="brand-mark">F</span><span>fix<span>first</span></span></a><p>Better places start with us.</p><span>Made for the places we call home <b>✳</b></span></footer>
+  </main>
+</body>
+</html>
